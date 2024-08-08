@@ -1,0 +1,24 @@
+FROM matrek/azdo_base:1.0
+
+# Declare the agent type , kubernates & Helm versions
+ENV KUBE_LATEST_VERSION="v1.28.12"
+#ENV HELM_VERSION="v3.3.0"
+ENV category init
+
+USER root 
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    openssh-client \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LATEST_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl \
+    && chmod +x /usr/local/bin/kubectl 
+    #&& wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+    #&& chmod +x /usr/local/bin/helm \
+    #&& chmod g+rwx /root \
+    #&& mkdir /config \
+    #&& chmod g+rwx /config \
+    #&& helm repo add zeiss https://zeisscharts.blob.core.windows.net/on-demand-agents
+USER agent 

@@ -1,10 +1,10 @@
 FROM ubuntu:22.04
-ENV TARGETARCH="linux-x64"
 # Also can be "linux-arm", "linux-arm64".
+ENV TARGETARCH="linux-x64"
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y curl git jq libicu70
+RUN apt install -y curl git jq libicu70 
 
 WORKDIR /azp/
 
@@ -15,10 +15,9 @@ RUN chmod +x ./start.sh
 RUN useradd -m -d /home/agent agent
 RUN chown -R agent:agent /azp /home/agent
 
+# Copy & r rust the root certficate of the server
 USER root 
-
 COPY ./cert.crt /usr/local/share/ca-certificates/
-
 RUN update-ca-certificates
 
 USER agent

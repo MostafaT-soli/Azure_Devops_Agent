@@ -1,0 +1,21 @@
+FROM matrek/azdo_base:1.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+USER root
+
+# Update the package list and install OpenJDK 17
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get clean;
+
+USER agent 
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# Add JAVA_HOME to PATH
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Verify installation
+RUN java -version

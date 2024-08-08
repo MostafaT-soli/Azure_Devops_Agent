@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: init-agent-role
+  namespace: az-devops  # Replace with your desired namespace
+rules:
+- apiGroups: ["*"]  # Allow all API groups
+  resources: ["*"]  # Allow all resources
+  verbs: ["create", "delete", "get", "list", "watch", "update", "patch"] 

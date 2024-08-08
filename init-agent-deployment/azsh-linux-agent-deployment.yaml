@@ -1,27 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azsh-linux
+  name: init-agent
   namespace: az-devops
   labels:
-    app: azsh-linux-agent
+    app: init-agent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azsh-linux-agent
+      app: init-agent
   template:
     metadata:
       labels:
-        app: azsh-linux-agent
+        app: init-agent
     spec:
+      serviceAccountName: init-agent-serviceaccount
       hostAliases:
         - ip: "172.16.40.21"
           hostnames:
           - "azuredevops.local"
       containers:
       - name: kubepodcreation
-        image: matrek/azsh-linux-agent:1.1
+        image: matrek/init-agent:1.0
         env:
           - name: AZP_URL
             valueFrom:
@@ -38,8 +39,6 @@ spec:
               secretKeyRef:
                 name: azdevops
                 key: AZP_POOL
-          - name: MESSAGE
-            value: "hello world"
         #command: [ "/bin/sh", "-c", "--" ]
         #args: [ "while true; do sleep 30; done;" ]
       imagePullSecrets:
