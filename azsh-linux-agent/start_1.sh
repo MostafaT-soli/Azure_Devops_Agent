@@ -50,7 +50,7 @@ export VSO_AGENT_IGNORE="AZP_TOKEN,AZP_TOKEN_FILE"
 
 print_header "1. Determining matching Azure Pipelines agent..."
 
-AZP_AGENT_PACKAGES=$(curl  -kLsS \
+AZP_AGENT_PACKAGES=$(curl -LsS \
     -u user:$(cat "${AZP_TOKEN_FILE}") \
     -H "Accept:application/json;" \
     "${AZP_URL}/_apis/distributedtask/packages/agent?platform=${TARGETARCH}&top=1")
@@ -65,7 +65,7 @@ fi
 
 print_header "2. Downloading and extracting Azure Pipelines agent..."
 
-curl -kLsS "${AZP_AGENT_PACKAGE_LATEST_URL}" | tar -xz & wait $!
+curl -LsS "${AZP_AGENT_PACKAGE_LATEST_URL}" | tar -xz & wait $!
 
 source ./env.sh
 
