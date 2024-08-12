@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- none
+
+variables:
+  agentPool: 'kub8agent'
+  agentType: 'java'
+
+
+stages:
+
+- stage: SpinUpAgent
+  pool:
+      name: $(agentPool)
+      demands:
+      - category -equals init
+  jobs: 
+  - job: SpinupAgent
+    displayName: Spining up Agent
+
+    steps:
+    - checkout: git://myproject/myproject
+    - script: |
+        helm repo add azdoa  https://mostafat-soli.github.io/azoda/
+        helm repo update
+        helm install --set podName=ondemand-$(Build.BuildId) --wait $(agentType)-$(Build.BuildId) azdoa/demandagent
+      displayName: "Create an Agent- Helm"
+
+- stage: Build
+  pool:
+      name: $(agentPool)
+      demands:
+      - Agent.Name -equals ondemand-$(Build.BuildId)
+  jobs:
+  - job: Build_spring_project
+    steps:
+    - checkout: git://myproject/spring
+    - script: |
+        ./mvnw package -DskipTests -Dspring-boot.run.profiles=postgres
+      displayName: 'build task'
+
+- stage: DeleteAgent
+  pool:
+      name: $(agentPool)
+      demands:
+      - category -equals init
+  jobs:
+    - job: Delete_agent
+      condition: succeededOrFailed()
+      steps:
+      - checkout: none
+      - script: |
+          helm uninstall $(agentType)-$(Build.BuildId)
+        displayName: "Delete an Agent - HELM"
