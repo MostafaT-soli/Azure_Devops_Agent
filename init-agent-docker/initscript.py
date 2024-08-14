@@ -6,7 +6,6 @@ import sys
 azdp='172.16.40.21'
 org='DefaultCollection'
 pool_id=2
-auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
 
 def check_assigned_request(auth_token,azdp,org,pool_id):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
