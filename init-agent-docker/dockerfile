@@ -1,4 +1,4 @@
-FROM matrek/azdo_base:1.0
+FROM matrek/azdo_base:latest
 
 # Declare the agent type , kubernates & Helm versions
 ENV KUBE_LATEST_VERSION="v1.28.12"
