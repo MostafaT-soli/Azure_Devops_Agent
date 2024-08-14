@@ -63,7 +63,9 @@ export VSO_AGENT_IGNORE="AZP_TOKEN,AZP_TOKEN_FILE"
 #   exit 1
 # fi
 
-# print_header "2. Downloading and extracting Azure Pipelines agent..."
+print_header "2. extracting Azure Pipelines agent..."
+
+tar -xzf *.tar.gz  & wait $!
 
 source ./env.sh
 
