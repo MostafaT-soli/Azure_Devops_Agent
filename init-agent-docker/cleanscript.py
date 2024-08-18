@@ -8,7 +8,8 @@ import sys
 azdp='172.16.40.21'
 org='DefaultCollection'
 pool_id=3
-
+auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+idle_threshold_minutes=10
 
 def get_idle_time_in_minutes(finish_time_str):
     finish_time = datetime.fromisoformat(finish_time_str.replace('Z', '+00:00'))
@@ -26,30 +27,51 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     response = requests.get(url, headers=headers, auth=auth)
     return response
 
-def main(response):
+def main(response,idle_threshold_minutes):
     
     if response.status_code != 200:
         print(f"Failed to fetch data from API. Status code: {response.status_code}")
         return
     
     data = response.json()
-    
+    delete_agent= []
     for agent in data.get('value', []):
-        if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
-            last_completed_request = agent.get('lastCompletedRequest')
-            #print(agent)
-            if last_completed_request:
-                finish_time = last_completed_request.get('finishTime')
-                if finish_time:
-                    idle_minutes = get_idle_time_in_minutes(finish_time)
-                    print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
+        if 'assignedRequest' not in agent:
+            if agent.get('status') == 'online' and agent.get('enabled') == True : 
+                last_completed_request = agent.get('lastCompletedRequest')
+                if last_completed_request:
+                    finish_time = last_completed_request.get('finishTime')
+                    if finish_time:
+                        idle_minutes = get_idle_time_in_minutes(finish_time)
+                        if idle_minutes > idle_threshold_minutes:
+                            print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
+                            delete_agent.append(agent['name'])
+                    else:
+                        print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
                 else:
-                    print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
+                    print(f"Agent {agent['name']} does not have a last completed request.")
             else:
-                print(f"Agent {agent['name']} does not have a last completed request.")
+                print(f"Agent {agent['name']}  This Agent is not enabled or offline.")
+                delete_agent.append(agent['name'])
         else:
-            print(f"Agent {agent['name']} is either not online, not enabled, or has an assigned request.")
+            print(f"Agent {agent['name']}  has an assigned request.")
+    print(delete_agent)
+    return(delete_agent)
+    
+
+#Testing only 
+response = check_assigned_request(auth_token, azdp, org, pool_id)
+main(response,idle_threshold_minutes)
 
 if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token>")
+        sys.exit(1)
+
+    azdp = sys.argv[1]
+    org = sys.argv[2]
+    pool_id = int(sys.argv[3])
+    auth_token = sys.argv[4]
+    
     response = check_assigned_request(auth_token, azdp, org, pool_id)
-    main(response)
+    main(response,idle_threshold_minutes)
