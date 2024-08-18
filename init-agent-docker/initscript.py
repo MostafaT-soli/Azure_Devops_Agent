@@ -23,15 +23,15 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     
     # Check if every element has 'assignedRequest'
     for agent in data['value']:
-        if 'assignedRequest' not in agent:
+        if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
             return True
     
     return False
 
-# #  Testing only 
-# result = check_assigned_request(auth_token,azdp,org,pool_id)
-# print(result)
-# # ssd Testing only 
+#  Testing only 
+result = check_assigned_request(auth_token,azdp,org,pool_id)
+print(result)
+# ssd Testing only 
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
