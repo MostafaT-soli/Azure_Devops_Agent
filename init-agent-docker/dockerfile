@@ -9,7 +9,11 @@ USER root
 
 WORKDIR /azp/
 
-COPY initscript.py .
+COPY . .
+
+RUN apt-get update && \
+    apt-get install -y python3.9 python3-pip && \
+    apt-get clean
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -17,10 +21,15 @@ RUN apt-get update && apt-get install -y \
     openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LATEST_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl \
     && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && chmod +x /usr/local/bin/helm 
 
-# return to the main user agent 
+RUN chown agent:agent ./initscript.py
+RUN chmod +x ./initscript.py
+    # return to the main user agent 
 USER agent 
+
