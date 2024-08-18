@@ -8,6 +8,7 @@ org='DefaultCollection'
 pool_id=3
 
 
+
 def check_assigned_request(auth_token,azdp,org,pool_id):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
     content_type = "application/json"
@@ -28,10 +29,10 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     
     return False
 
-#  Testing only 
-result = check_assigned_request(auth_token,azdp,org,pool_id)
-print(result)
-# ssd Testing only 
+# #  Testing only 
+# result = check_assigned_request(auth_token,azdp,org,pool_id)
+# print(result)
+# # ssd Testing only 
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
