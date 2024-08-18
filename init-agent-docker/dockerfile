@@ -7,6 +7,10 @@ ENV category init
 
 USER root 
 
+WORKDIR /azp/
+
+COPY initscript.py .
+
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
