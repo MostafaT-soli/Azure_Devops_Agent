@@ -6,7 +6,7 @@ import sys
 azdp='172.16.40.21'
 org='DefaultCollection'
 pool_id=3
-auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+
 
 def check_assigned_request(auth_token,azdp,org,pool_id):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
@@ -28,10 +28,10 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     
     return False
 
-#  Testing only 
-result = check_assigned_request(auth_token,azdp,org,pool_id)
-print(result)
-#  Testing only 
+# #  Testing only 
+# result = check_assigned_request(auth_token,azdp,org,pool_id)
+# print(result)
+# # ssd Testing only 
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
