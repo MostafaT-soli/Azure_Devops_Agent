@@ -3,13 +3,7 @@ from datetime import datetime, timezone
 from requests.auth import HTTPBasicAuth
 import sys
 
-# Replace this URL with the actual API endpoint
 
-azdp='172.16.40.21'
-org='DefaultCollection'
-pool_id=3
-auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
-idle_threshold_minutes=10
 
 def get_idle_time_in_minutes(finish_time_str):
     finish_time = datetime.fromisoformat(finish_time_str.replace('Z', '+00:00'))
@@ -59,19 +53,29 @@ def main(response,idle_threshold_minutes):
     return(delete_agent)
     
 
-#Testing only 
-response = check_assigned_request(auth_token, azdp, org, pool_id)
-main(response,idle_threshold_minutes)
+# #  uncomment for Testing only 
+
+# azdp='172.16.40.21'
+# org='DefaultCollection'
+# pool_id=3
+# auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+# idle_threshold_minutes=10
+
+# response = check_assigned_request(auth_token, azdp, org, pool_id)
+# main(response,idle_threshold_minutes)
+
+# #  uncomment for Testing only 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token>")
+    if len(sys.argv) != 6:
+        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token> <idle_threshold_minutes>")
         sys.exit(1)
 
     azdp = sys.argv[1]
     org = sys.argv[2]
     pool_id = int(sys.argv[3])
     auth_token = sys.argv[4]
+    idle_threshold_minutes=  auth_token = sys.argv[5]
     
     response = check_assigned_request(auth_token, azdp, org, pool_id)
     main(response,idle_threshold_minutes)

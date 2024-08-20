@@ -3,11 +3,6 @@ from requests.auth import HTTPBasicAuth
 import sys
 # Variabls
 
-azdp='172.16.40.21'
-org='DefaultCollection'
-pool_id=3
-
-
 
 def check_assigned_request(auth_token,azdp,org,pool_id):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
@@ -23,27 +18,37 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
         return False
     
     # Check if every element has 'assignedRequest'
-    for agent in data['value']:
-        if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
-            return True
-    
+    if int(data['count']) >=  max_node:
+        for agent in data['value']:
+            if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
+                return True
+    else:
+        return False
     return False
 
-# #  Testing only 
+# #  uncomment for Testing only 
+# azdp='172.16.40.21'
+# org='DefaultCollection'
+# pool_id=3
+# auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+# max_node=4
+
 # result = check_assigned_request(auth_token,azdp,org,pool_id)
 # print(result)
-# # ssd Testing only 
+# #  uncomment for Testing only 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token>")
+    if len(sys.argv) != 6:
+        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token> <max_node> ")
         sys.exit(1)
 
     azdp = sys.argv[1]
     org = sys.argv[2]
     pool_id = int(sys.argv[3])
     auth_token = sys.argv[4]
+    max_node = sys.argv[5]
 
     
-    result = check_assigned_request(auth_token, azdp, org, pool_id)
+    result = check_assigned_request(auth_token, azdp, org, pool_id,max_node)
     print(result)
+
