@@ -2,7 +2,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import sys
 
-def check_assigned_request(auth_token,azdp,org,pool_id):
+def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
     content_type = "application/json"
     headers = {
@@ -47,6 +47,6 @@ if __name__ == "__main__":
     max_node = sys.argv[5]
 
     
-    result = check_assigned_request(auth_token, azdp, org, pool_id,max_node)
+    result = check_assigned_request(auth_token, azdp, org, pool_id, max_node)
     print(result)
 
