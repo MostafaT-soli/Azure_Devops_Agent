@@ -16,7 +16,7 @@ def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
         return False
     
     # Check if every element has 'assignedRequest'
-    if int(data['count']) >=  int(max_node):
+    if int(data['count']) <=  int(max_node):
         for agent in data['value']:
             if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
                 return True
