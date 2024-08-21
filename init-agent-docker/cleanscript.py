@@ -40,15 +40,15 @@ def main(response,idle_threshold_minutes):
                         if idle_minutes > idle_threshold_minutes:
                             #print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
                             delete_agent.append(agent['name'])
-                    else:
-                        print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
-                else:
-                    print(f"Agent {agent['name']} does not have a last completed request.")
+                #     else:
+                #         print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
+                # else:
+                #     print(f"Agent {agent['name']} does not have a last completed request.")
             else:
-                print(f"Agent {agent['name']}  This Agent is not enabled or offline.")
+                # print(f"Agent {agent['name']}  This Agent is not enabled or offline.")
                 delete_agent.append(agent['name'])
-        else:
-            print(f"Agent {agent['name']}  has an assigned request.")
+        # else:
+        #     print(f"Agent {agent['name']}  has an assigned request.")
     print(*delete_agent)
     return(delete_agent)
     

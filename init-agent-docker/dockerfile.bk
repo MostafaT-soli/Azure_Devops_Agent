@@ -1,0 +1,48 @@
+FROM matrek/azdo_base:latest
+
+# Declare the agent type , kubernates & Helm versions
+ENV KUBE_LATEST_VERSION="v1.28.12"
+ENV HELM_VERSION="v3.12.0"
+ARG PYTHON_VERSION=3.12.5
+ENV category init
+# Set environment variables to avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+USER root 
+
+WORKDIR /azp/
+
+COPY . .
+
+# Update the package list and install prerequisites
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa 
+
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    openssh-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Update the package list again and install the specified Python version
+RUN apt-get update && apt-get install -y \
+    python${PYTHON_VERSION%.*} \
+    python${PYTHON_VERSION%.*}-venv \
+    python${PYTHON_VERSION%.*}-dev \
+    python${PYTHON_VERSION%.*}-distutils \
+    && apt-get clean
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LATEST_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl \
+    && chmod +x /usr/local/bin/kubectl \
+    && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+    && chmod +x /usr/local/bin/helm 
+
+RUN chown agent:agent ./*.py
+RUN chmod +x ./*.py
+    # return to the main user agent 
+USER agent 
+
