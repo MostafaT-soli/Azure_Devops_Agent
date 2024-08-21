@@ -1,28 +1,47 @@
 FROM matrek/azdo_base:latest
 
-# Declare the agent type , kubernates & Helm versions
+# Declare the agent type, Kubernetes & Helm versions
 ENV KUBE_LATEST_VERSION="v1.28.12"
 ENV HELM_VERSION="v3.12.0"
+ARG PYTHON_VERSION=3.12
 ENV category init
+# Set environment variables to avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
 
-USER root 
+USER root
 
 WORKDIR /azp/
 
-COPY . .
+# Copy only necessary files
+COPY requirements.txt ./
+COPY ./*.py ./
 
-RUN apt-get update && \
-    apt-get install -y python3.9 python3-pip && \
-    apt-get clean
+# Update the package list, install prerequisites, and clean up in one RUN statement
 
 RUN apt-get update && apt-get install -y \
+    software-properties-common \
     wget \
     unzip \
-    openssh-client \
+    openssh-client 
+
+RUN add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y \
+    python${PYTHON_VERSION} \
+    python3-venv\
+#    python3-pip \
+    python${PYTHON_VERSION}-distutils\
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.12 7
+RUN wget https://bootstrap.pypa.io/get-pip.py 
+RUN python${PYTHON_VERSION} get-pip.py 
+RUN  /usr/local/bin/pip${PYTHON_VERSION} install --no-cache-dir -r requirements.txt
 
+# Install Python packages
+#RUN pip${PYTHON_VERSION} install --no-cache-dir -r requirements.txt
+
+# Install kubectl and Helm
 RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LATEST_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl \
     && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
@@ -30,6 +49,6 @@ RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LAT
 
 RUN chown agent:agent ./*.py
 RUN chmod +x ./*.py
-    # return to the main user agent 
+# return to the main user agent 
 USER agent 
-
+    

@@ -1,8 +1,6 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import sys
-# Variabls
-
 
 def check_assigned_request(auth_token,azdp,org,pool_id):
     url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"

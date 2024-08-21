@@ -38,7 +38,7 @@ def main(response,idle_threshold_minutes):
                     if finish_time:
                         idle_minutes = get_idle_time_in_minutes(finish_time)
                         if idle_minutes > idle_threshold_minutes:
-                            print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
+                            #print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
                             delete_agent.append(agent['name'])
                     else:
                         print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
@@ -49,11 +49,12 @@ def main(response,idle_threshold_minutes):
                 delete_agent.append(agent['name'])
         else:
             print(f"Agent {agent['name']}  has an assigned request.")
-    print(delete_agent)
+    print(*delete_agent)
     return(delete_agent)
     
 
-# #  uncomment for Testing only 
+# #Testing only 
+# Testing Values
 
 # azdp='172.16.40.21'
 # org='DefaultCollection'
@@ -64,8 +65,6 @@ def main(response,idle_threshold_minutes):
 # response = check_assigned_request(auth_token, azdp, org, pool_id)
 # main(response,idle_threshold_minutes)
 
-# #  uncomment for Testing only 
-
 if __name__ == "__main__":
     if len(sys.argv) != 6:
         print("Usage: python script.py <azdp> <org> <pool_id> <auth_token> <idle_threshold_minutes>")
@@ -75,7 +74,7 @@ if __name__ == "__main__":
     org = sys.argv[2]
     pool_id = int(sys.argv[3])
     auth_token = sys.argv[4]
-    idle_threshold_minutes=  auth_token = sys.argv[5]
+    idle_threshold_minutes=  int(sys.argv[5])
     
     response = check_assigned_request(auth_token, azdp, org, pool_id)
     main(response,idle_threshold_minutes)
