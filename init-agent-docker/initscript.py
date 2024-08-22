@@ -15,25 +15,31 @@ def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
     if not data.get('value'):
         return False
     
-    # Check if every element has 'assignedRequest'
-    if int(data['count']) >=  int(max_node):
-        for agent in data['value']:
-            if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
-                return True
+    # Check if every agent has 'assignedRequest'
+    total_node_number = int(data['count'])
+
+    for agent in data['value']:
+        if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
+            return True
+        if agent.get('status') != 'online' and agent.get('enabled') != True :
+            total_node_number = +1
+
+    if total_node_number >=  int(max_node):
+        return True
     else:
         return False
-    return False
+   
 
-# #  uncomment for Testing only 
-# azdp='172.16.40.21'
-# org='DefaultCollection'
-# pool_id=3
-# auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
-# max_node=4
+#  uncomment for Testing only 
+azdp='172.16.40.21'
+org='DefaultCollection'
+pool_id=3
+auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+max_node=4
 
-# result = check_assigned_request(auth_token,azdp,org,pool_id,max_node)
-# print(result)
-# #  uncomment for Testing only 
+result = check_assigned_request(auth_token,azdp,org,pool_id,max_node)
+print(result)
+#  uncomment for Testing only 
 
 if __name__ == "__main__":
     if len(sys.argv) != 6:
