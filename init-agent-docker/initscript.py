@@ -3,7 +3,7 @@ from requests.auth import HTTPBasicAuth
 import sys
 
 def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
-    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeAssignedRequest=true"
+    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
@@ -16,7 +16,7 @@ def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
         return False
     
     # Check if every element has 'assignedRequest'
-    if int(data['count']) <=  int(max_node):
+    if int(data['count']) >=  int(max_node):
         for agent in data['value']:
             if agent.get('status') == 'online' and agent.get('enabled') == True and 'assignedRequest' not in agent:
                 return True
@@ -31,7 +31,7 @@ def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
 # auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
 # max_node=4
 
-# result = check_assigned_request(auth_token,azdp,org,pool_id)
+# result = check_assigned_request(auth_token,azdp,org,pool_id,max_node)
 # print(result)
 # #  uncomment for Testing only 
 
