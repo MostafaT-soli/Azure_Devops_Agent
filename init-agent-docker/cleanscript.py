@@ -32,23 +32,23 @@ def get_idle_time_in_minutes(finish_time_str):
     return idle_time.total_seconds() / 60
 
 def check_assigned_request(auth_token,azdp,org,pool_id):
-    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
+    url = f"https://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
     }
     auth = HTTPBasicAuth('', auth_token)
-    response = requests.get(url, headers=headers, auth=auth)
+    response = requests.get(url, headers=headers, auth=auth, verify=False)
     return response
 
 def delete_agent_api(auth_token,azdp,org,pool_id,agent_id):
-    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents/{agent_id}?api-version=7.0"
+    url = f"https://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents/{agent_id}?api-version=7.0"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
     }
     auth = HTTPBasicAuth('', auth_token)
-    response = requests.delete(url, headers=headers, auth=auth)
+    response = requests.delete(url, headers=headers, auth=auth, verify=False)
     return response
 
 def get_idle_agents(response,idle_threshold_minutes):

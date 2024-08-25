@@ -3,13 +3,13 @@ from requests.auth import HTTPBasicAuth
 import sys
 
 def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
-    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
+    url = f"https://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
     }
     auth = HTTPBasicAuth('', auth_token)
-    response = requests.get(url, headers=headers, auth=auth)
+    response = requests.get(url, headers=headers, auth=auth, verify=False)
     data = response.json()
     # Check if the response is empty
     if not data.get('value'):
