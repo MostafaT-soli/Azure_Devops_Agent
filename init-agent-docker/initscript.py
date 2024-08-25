@@ -30,16 +30,16 @@ def check_assigned_request(auth_token,azdp,org,pool_id,max_node):
         return False
    
 
-#  uncomment for Testing only 
-azdp='172.16.40.21'
-org='DefaultCollection'
-pool_id=3
-auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
-max_node=4
+# #  uncomment for Testing only 
+# azdp='172.16.40.21'
+# org='DefaultCollection'
+# pool_id=3
+# auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
+# max_node=4
 
-result = check_assigned_request(auth_token,azdp,org,pool_id,max_node)
-print(result)
-#  uncomment for Testing only 
+# result = check_assigned_request(auth_token,azdp,org,pool_id,max_node)
+# print(result)
+# #  uncomment for Testing only 
 
 if __name__ == "__main__":
     if len(sys.argv) != 6:

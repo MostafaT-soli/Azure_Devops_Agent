@@ -5,9 +5,9 @@ from requests.auth import HTTPBasicAuth
 import sys
 
 def run_kubectl_delete(agent):
-    # #Define the base command
+    #Define the base command
     command = f"kubectl delete pod {agent}"
-    # # test command
+    # # # test command
     # command = f"echo {agent}"
     try:
         # Run the command
@@ -41,6 +41,16 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     response = requests.get(url, headers=headers, auth=auth)
     return response
 
+def delete_agent_api(auth_token,azdp,org,pool_id,agent_id):
+    url = f"http://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents/{agent_id}?api-version=7.0"
+    content_type = "application/json"
+    headers = {
+        "Content-Type": content_type,
+    }
+    auth = HTTPBasicAuth('', auth_token)
+    response = requests.delete(url, headers=headers, auth=auth)
+    return response
+
 def get_idle_agents(response,idle_threshold_minutes):
     
     if response.status_code != 200:
@@ -59,25 +69,26 @@ def get_idle_agents(response,idle_threshold_minutes):
                         idle_minutes = get_idle_time_in_minutes(finish_time)
                         if idle_minutes > idle_threshold_minutes:
                             print(f"Agent {agent['name']} has been idle for {idle_minutes:.2f} minutes.")
-                            delete_agent.append(agent['name'])
+                            delete_agent.append({'name': agent['name'] , 'id' : agent['id'] })
                     else:
                         print(f"Agent {agent['name']} does not have a finish time for the last completed request.")
                 else:
                     print(f"Agent {agent['name']} does not have a last completed request.")
             else:
                 print(f"Agent {agent['name']}  This Agent is not enabled or offline.")
-                delete_agent.append(agent['name'])
+                delete_agent.append({'name': agent['name'] , 'id' : agent['id'] })
         else:
             print(f"Agent {agent['name']}  has an assigned request.")
     return(delete_agent)
     
 def delet_idle_agents(idle_agents):
     for agent in idle_agents:
-        output, errors = run_kubectl_delete(agent)
+        output, errors = run_kubectl_delete(agent['name'])
         print(f"agents to be deleted:{output}")
         if errors:
-            print(f"There was an error in deleting agent {agent} errors:\n", errors)
-        
+            print(f"There was an error in deleting agent {agent} from kube8  errors:\n", errors)
+            print("trying api")
+            delete_agent_api(auth_token, azdp, org, pool_id,agent['id'])
 
 # #Testing only 
 # #Testing Values
@@ -91,7 +102,7 @@ def delet_idle_agents(idle_agents):
 # response = check_assigned_request(auth_token, azdp, org, pool_id)
 # idle_agents = get_idle_agents(response,idle_threshold_minutes)
 # delet_idle_agents(idle_agents)
-###################################
+# ##################################
 
 if __name__ == "__main__":
     if len(sys.argv) != 6:
