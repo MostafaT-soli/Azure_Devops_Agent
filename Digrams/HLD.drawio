@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-08-25T13:17:40.968Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.11 Chrome/114.0.5735.289 Electron/25.9.8 Safari/537.36" etag="ddarVm7hsc3Q1vJCIB6T" version="22.1.11" type="device" pages="3">
+<mxfile host="Electron" modified="2024-08-25T14:28:51.900Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.11 Chrome/114.0.5735.289 Electron/25.9.8 Safari/537.36" etag="7hepVz4uuY9-p0avQiYK" version="22.1.11" type="device" pages="3">
   <diagram name="Page-1" id="anqNsSUw09X5eIJ39eNq">
     <mxGraphModel dx="1022" dy="1419" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -123,10 +123,55 @@
     </mxGraphModel>
   </diagram>
   <diagram id="-lsYyyden-yef-jy3njm" name="Page-3">
-    <mxGraphModel dx="1022" dy="592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1202" dy="696" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-21" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="240" width="170" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pIbHFk7vSbz9TOT-vS0E-5" target="pIbHFk7vSbz9TOT-vS0E-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pIbHFk7vSbz9TOT-vS0E-5" target="pIbHFk7vSbz9TOT-vS0E-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="520" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="730" y="280" />
+              <mxPoint x="730" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-5" value="check agent availability" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="240" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pIbHFk7vSbz9TOT-vS0E-7" target="pIbHFk7vSbz9TOT-vS0E-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-7" value="Create a new Agent" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="383.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-9" value="Build Stage/steps" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-12" value="Check Agent Stage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="340" y="328" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-13" value="False" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="545" y="328" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-16" value="True" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="595" y="248" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pIbHFk7vSbz9TOT-vS0E-22" target="pIbHFk7vSbz9TOT-vS0E-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-22" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Azure_Pipelines.svg;" vertex="1" parent="1">
+          <mxGeometry x="525" y="130" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="pIbHFk7vSbz9TOT-vS0E-24" value="start pipeline" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="584" y="130" width="90" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
