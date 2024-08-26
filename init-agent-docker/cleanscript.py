@@ -31,8 +31,8 @@ def get_idle_time_in_minutes(finish_time_str):
     idle_time = current_time - finish_time
     return idle_time.total_seconds() / 60
 
-def check_assigned_request(auth_token,azdp,org,pool_id):
-    url = f"https://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
+def check_assigned_request(auth_token,azdo,org,pool_id):
+    url = f"https://{azdo}/{org}/_apis/distributedtask/pools/{pool_id}/agents?includeLastCompletedRequest=true&includeAssignedRequest=true"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
@@ -41,8 +41,8 @@ def check_assigned_request(auth_token,azdp,org,pool_id):
     response = requests.get(url, headers=headers, auth=auth, verify=False)
     return response
 
-def delete_agent_api(auth_token,azdp,org,pool_id,agent_id):
-    url = f"https://{azdp}/{org}/_apis/distributedtask/pools/{pool_id}/agents/{agent_id}?api-version=7.0"
+def delete_agent_api(auth_token,azdo,org,pool_id,agent_id):
+    url = f"https://{azdo}/{org}/_apis/distributedtask/pools/{pool_id}/agents/{agent_id}?api-version=7.0"
     content_type = "application/json"
     headers = {
         "Content-Type": content_type,
@@ -88,33 +88,33 @@ def delet_idle_agents(idle_agents):
         if errors:
             print(f"There was an error in deleting agent {agent} from kube8  errors:\n", errors)
             print("trying api")
-            delete_agent_api(auth_token, azdp, org, pool_id,agent['id'])
+            delete_agent_api(auth_token, azdo, org, pool_id,agent['id'])
 
 # #Testing only 
 # #Testing Values
 
-# azdp='172.16.40.21'
+# azdo='172.16.40.21'
 # org='DefaultCollection'
 # pool_id=3
 # auth_token='ayfanaksdxrrpjhfxe4nys4my6cnsvemk7pba2xtsk4hyu2jnnia'
 # idle_threshold_minutes=10
 
-# response = check_assigned_request(auth_token, azdp, org, pool_id)
+# response = check_assigned_request(auth_token, azdo, org, pool_id)
 # idle_agents = get_idle_agents(response,idle_threshold_minutes)
 # delet_idle_agents(idle_agents)
 # ##################################
 
 if __name__ == "__main__":
     if len(sys.argv) != 6:
-        print("Usage: python script.py <azdp> <org> <pool_id> <auth_token> <idle_threshold_minutes>")
+        print("Usage: python script.py <azdo> <org> <pool_id> <auth_token> <idle_threshold_minutes>")
         sys.exit(1)
 
-    azdp = sys.argv[1]
+    azdo = sys.argv[1]
     org = sys.argv[2]
     pool_id = int(sys.argv[3])
     auth_token = sys.argv[4]
     idle_threshold_minutes=  int(sys.argv[5])
     
-    response = check_assigned_request(auth_token, azdp, org, pool_id)
+    response = check_assigned_request(auth_token, azdo, org, pool_id)
     idle_agents = get_idle_agents(response,idle_threshold_minutes)
     delet_idle_agents(idle_agents)
